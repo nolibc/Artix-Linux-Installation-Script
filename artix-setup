@@ -1,0 +1,94 @@
+#!/bin/bash
+
+
+# ensure booted in EFI mode
+if [[ ! -d /sys/firmware/efi/efivars ]] ; then
+  echo "You are not in EFI mode!"
+  exit 1
+fi
+
+# check for internet connectivity
+if ! ping archlinux.org -c 1 > /dev/null 2>&1 ; then
+  echo "You are not connected to the internet."
+  exit 1
+fi
+
+# manual partitioning
+echo "
+
+Welcome to the Artix Linux installation script!
+Below you will see a list of your block devices.
+
+"
+
+lsblk
+
+echo -e "\n"
+read -r -p "Select drive to install to: /dev/" install_disk
+
+if [[ ! -e "/dev/$install_disk" ]] ; then
+  echo "/dev/$install_disk does not exist."
+  exit 1
+fi
+
+echo "
+
+Disk: /dev/${install_disk} found.
+
+You will now be taken into cfdisk to create your partitions.
+Most likely, you will want the following partitions:
+
+partition	type
+--------------------------------
+root		Linux filesystem
+boot		EFI System
+swap		Linux swap
+
+For your boot partition, the Arch wiki recommends a size of 550MiB.
+
+"
+
+read -r -p "Press Enter to proceed..."
+cfdisk "/dev/$install_disk"
+
+# formating
+echo -e "\nEnter partition names in the following order: (root boot swap) and seperated by a space."
+
+read -p "> " -r -a partitions
+if [[ ! -e "/dev/${partitions[0]}" ]] ; then
+  echo "/dev/${partitions[0]} does not exist."
+  exit
+fi
+mkfs.ext4 -L ROOT /dev/"${partitions[0]}"
+
+if [[ ! -e "/dev/${partitions[1]}" ]] ; then
+  echo "/dev/${partitions[1]} does not exist."
+  exit
+fi
+mkfs.fat -F 32 /dev/"${partitions[1]}"
+
+if [[ ! -e "/dev/${partitions[2]}" ]] ; then
+  echo "/dev/${partitions[2]} does not exist."
+  exit
+fi
+mkswap -L SWAP /dev/"${partitions[2]}"
+
+sleep 1
+# mount partitions
+swapon /dev/disk/by-label/SWAP
+mount /dev/disk/by-label/ROOT /mnt
+mkdir /mnt/boot
+mount /dev/"${partitions[1]}" /mnt/boot
+
+# install base system (-i to disable auto-confirmation and reply "y" to conflict override prompts
+# credit: https://forum.artixlinux.org/index.php/topic,3254.0.html
+basestrap -i /mnt base base-devel runit elogind-runit linux linux-firmware
+fstabgen -U /mnt >> /mnt/etc/fstab
+
+# chroot into /mnt and run chrootsetup script
+host_link="https://cdn.discordapp.com/attachments/890074970347147294/1057063444207108156/chrootsetup.sh"
+curl "${host_link}" -o /mnt/chrootsetup.sh
+chmod +x /mnt/chrootsetup.sh
+artix-chroot /mnt /chrootsetup.sh
+
+umount -R /mnt
