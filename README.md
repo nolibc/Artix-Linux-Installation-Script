@@ -1,2 +1,10 @@
 # Artix-Linux-Installation-Script
-A quick and easy way to install Artix Linux!
+A simple shell script that installs Artix Linux.
+
+## Usage
+To use the install script, just `curl` the `artix-setup` file onto the system and run it.
+```bash
+curl -O https://raw.githubusercontent.com/StarDrummer/Artix-Linux-Installation-Script/main/artix-setup
+chmod +x artix-setup
+./artix-setup
+```
