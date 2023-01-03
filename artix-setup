@@ -86,7 +86,7 @@ basestrap -i /mnt base base-devel runit elogind-runit linux linux-firmware
 fstabgen -U /mnt >> /mnt/etc/fstab
 
 # chroot into /mnt and run chrootsetup script
-host_link="https://cdn.discordapp.com/attachments/890074970347147294/1057063444207108156/chrootsetup.sh"
+host_link="https://raw.githubusercontent.com/StarDrummer/Artix-Linux-Installation-Script/main/chrootsetup.sh"
 curl "${host_link}" -o /mnt/chrootsetup.sh
 chmod +x /mnt/chrootsetup.sh
 artix-chroot /mnt /chrootsetup.sh
