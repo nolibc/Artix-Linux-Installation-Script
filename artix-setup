@@ -92,3 +92,8 @@ chmod +x /mnt/chrootsetup.sh
 artix-chroot /mnt /chrootsetup.sh
 
 umount -R /mnt
+
+echo "
+
+Installation complete. Please reboot your system.
+"

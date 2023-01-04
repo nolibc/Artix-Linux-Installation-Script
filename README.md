@@ -3,6 +3,14 @@ A simple shell script that installs Artix Linux.
 
 ## Usage
 To use the install script, just `curl` the `artix-setup` file onto the system and run it.
+
+Some defaults include:
+
+init: `runit`
+network: `networkmanager`
+bootloader: `grub`
+locale: `en_US.utf8`
+
 ```bash
 curl -O https://raw.githubusercontent.com/StarDrummer/Artix-Linux-Installation-Script/main/artix-setup
 chmod +x artix-setup
