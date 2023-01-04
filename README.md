@@ -1,4 +1,4 @@
-# Artix-Linux-Installation-Script
+# Artix Linux Installation Script
 A simple shell script that installs Artix Linux.
 
 ## Usage
