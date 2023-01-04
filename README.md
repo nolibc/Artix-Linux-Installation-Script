@@ -6,10 +6,10 @@ To use the install script, just `curl` the `artix-setup` file onto the system an
 
 Some defaults include:
 
-init: `runit`
-network: `networkmanager`
-bootloader: `grub`
-locale: `en_US.utf8`
+init: `runit`  
+network: `networkmanager`  
+bootloader: `grub`  
+locale: `en_US.utf8`  
 
 ```bash
 curl -O https://raw.githubusercontent.com/StarDrummer/Artix-Linux-Installation-Script/main/artix-setup
