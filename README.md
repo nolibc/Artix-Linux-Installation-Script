@@ -5,7 +5,7 @@ A simple shell script that installs Artix Linux.
 To use the install script, just `curl` the `artix-setup` file onto the system and run it.
 
 ```bash
-curl -O https://raw.githubusercontent.com/StarDrummer/Artix-Linux-Installation-Script/main/artix-setup
+curl -O https://raw.githubusercontent.com/soystemd/Artix-Linux-Installation-Script/main/artix-setup
 chmod +x artix-setup
 ./artix-setup
 ```
